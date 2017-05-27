@@ -9,12 +9,14 @@ app.get('/', function(req, res){
 //Whenever someone connects this gets executed
 io.on('connection', function(socket){
   console.log('A user connected');
-
-  //Whenever someone disconnects this piece of code executed
+  //Send a message when
+  setTimeout(function(){
+    //Sending an object when emmiting an event
+    socket.emit('testerEvent', { description: 'A custom event named testerEvent!'});
+  }, 40000);
   socket.on('disconnect', function () {
     console.log('A user disconnected');
   });
-
 });
 
 http.listen(3000, function(){
