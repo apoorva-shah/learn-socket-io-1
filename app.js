@@ -7,22 +7,19 @@ app.get('/', function(req, res){
 });
 
 //Whenever someone connects this gets executed
-var roomno = 1;
+users = [];
 io.on('connection', function(socket){
-
-    //Increase roomno 2 clients are present in a room.
-    if(io.nsps['/'].adapter.rooms["room-"+roomno] && io.nsps['/'].adapter.rooms["room-"+roomno].length > 1)
-        roomno++;
-
-
-    socket.join("room-"+roomno);
-
-    //Send this event to everyone in the room.
-    io.sockets.in("room-"+roomno).emit('connectToRoom', "You are in room no. "+roomno);
+    console.log('A user connected');
+    socket.on('setUsername', function(data){
+        if(users.indexOf(data) > -1){
+            users.push(data);
+            socket.emit('userSet', {username: data});
+        }
+        else{
+            socket.emit('userExists', data + ' username is taken! Try some other username.');
+        }
+    })
 });
-
-
-
 http.listen(3000, function(){
   console.log('listening on *:3000');
 });
