@@ -13,7 +13,12 @@ io.on('connection', function(socket){
   setTimeout(function(){
     //Sending an object when emmiting an event
     socket.emit('testerEvent', { description: 'A custom event named testerEvent!'});
-  }, 40000);
+  }, 4000);
+
+    socket.on('clientEvent', function(data){
+        console.log(data);
+    });
+
   socket.on('disconnect', function () {
     console.log('A user disconnected');
   });
