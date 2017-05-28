@@ -9,14 +9,10 @@ app.get('/', function(req, res){
 //Whenever someone connects this gets executed
 var clients = 0;
 
-io.on('connection', function(socket){
-    clients++;
-    socket.emit('newclientconnect',{ description: 'Hey, welcome!'});
-    socket.broadcast.emit('newclientconnect',{ description: clients + ' clients connected!'})
-    socket.on('disconnect', function () {
-        clients--;
-        socket.broadcast.emit('newclientconnect',{ description: clients + ' clients connected!'})
-    });
+var nsp = io.of('/my-namespace');
+nsp.on('connection', function(socket){
+    console.log('someone connected');
+    nsp.emit('hi', 'Hello everyone!');
 });
 
 http.listen(3000, function(){

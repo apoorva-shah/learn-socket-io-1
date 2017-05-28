@@ -2,12 +2,11 @@
 <html>
 <head><title>Hello world</title></head>
 <script src="/socket.io/socket.io.js"></script>
-<script src="/socket.io/socket.io.js"></script>
 <script>
-    var socket = io();
-    socket.on('newclientconnect',function(data){
+    var socket = io('/my-namespace');
+    socket.on('hi',function(data){
         document.body.innerHTML = '';
-        document.write(data.description);
+        document.write(data);
     });
 </script>
 <body>Hello world</body>
