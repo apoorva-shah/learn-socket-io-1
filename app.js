@@ -7,21 +7,15 @@ app.get('/', function(req, res){
 });
 
 //Whenever someone connects this gets executed
+var clients = 0;
+
 io.on('connection', function(socket){
-  console.log('A user connected');
-  //Send a message when
-  setTimeout(function(){
-    //Sending an object when emmiting an event
-    socket.emit('testerEvent', { description: 'A custom event named testerEvent!'});
-  }, 4000);
-
-    socket.on('clientEvent', function(data){
-        console.log(data);
+    clients++;
+    io.sockets.emit('broadcast',{ description: clients + ' clients connected!'});
+    socket.on('disconnect', function () {
+        clients--;
+        io.sockets.emit('broadcast',{ description: clients + ' clients connected!'});
     });
-
-  socket.on('disconnect', function () {
-    console.log('A user disconnected');
-  });
 });
 
 http.listen(3000, function(){
